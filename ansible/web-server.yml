@@ -1,0 +1,45 @@
+---
+- name: Configure the web server
+  hosts: web_servers
+  become: yes
+  tasks:
+    - name: Update and install dependencies
+      apt:
+        update_cache: yes
+        name: 
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker GPG key
+      command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Run Nginx container
+      docker_container:
+        name: nginx
+        image: nginx:latest
+        state: started
+        ports:
+          - "80:80"
+          - "443:443"
+        volumes:
+          - /path/to/certbot:/etc/letsencrypt
+          - /path/to/nginx-config:/etc/nginx
