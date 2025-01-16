@@ -1,0 +1,22 @@
+---
+- name: Configure the database server
+  hosts: db_servers
+  become: yes
+  tasks:
+    - name: Install MySQL
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Ensure MySQL is running
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create database and user
+      mysql_user:
+        name: db_user
+        password: db_password
+        priv: '*.*:ALL'
+        state: present
