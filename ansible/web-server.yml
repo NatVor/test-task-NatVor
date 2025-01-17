@@ -74,6 +74,8 @@
         volumes:
           - /files/certbot:/etc/letsencrypt
           - /files/nginx-config:/etc/nginx
+        networks:
+          - name: app_network
 
     - name: Install Certbot
       apt:
