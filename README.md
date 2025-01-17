@@ -1,4 +1,4 @@
-# Test Task for NatVor
+# Test Task 
 
 This repository contains a project setup for deploying a web application to Azure using Terraform, Ansible, Docker, and GitHub Actions.
 
