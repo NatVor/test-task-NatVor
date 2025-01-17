@@ -85,4 +85,4 @@ jobs:
 
       - name: Deploy to web server VM using Docker Compose
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} azureuser@your-web-server-ip 'cd /path/to/your/app && docker-compose pull && docker-compose up -d'
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.WEB_SERVER_SSH_HOST }} 'cd /app && docker-compose pull && docker-compose up -d'
