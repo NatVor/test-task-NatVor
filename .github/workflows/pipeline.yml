@@ -99,7 +99,7 @@ jobs:
 
       - name: Deploy to web server VM using Docker Compose
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.WEB_SERVER_SSH_HOST }} '
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.WEB_SERVER_SSH_USER }}@${{ secrets.WEB_SERVER_SSH_HOSTNAME }} '
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/test-app:latest
           sudo docker stop my-app-container || true
           sudo docker rm my-app-container || true
