@@ -5,10 +5,10 @@ app = Flask(__name__)
 
 # Configure MySQL connection
 db_config = {
-    'user': 'webapp_user',
+    'user': 'user',
     'password': 'password',
-    'host': 'database-vm-ip',
-    'database': 'webapp_db'
+    'host': 'database',
+    'database': 'db'
 }
 
 @app.route("/")
