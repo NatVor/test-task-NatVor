@@ -85,4 +85,8 @@ jobs:
 
       - name: Deploy to web server VM using Docker Compose
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.WEB_SERVER_SSH_HOST }} 'cd /app && docker-compose pull && docker-compose up -d'
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.WEB_SERVER_SSH_HOST }} '
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/test-app:latest
+          sudo docker stop my-app-container || true
+          sudo docker rm my-app-container || true
+          sudo docker run -d --name app-container -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/test-app:latest'
