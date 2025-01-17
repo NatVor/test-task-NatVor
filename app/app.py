@@ -11,9 +11,11 @@ db_config = {
     'database': 'db'
 }
 
+
 @app.route("/")
 def index():
     return "Hello, World! Flask is working with MySQL!"
+
 
 @app.route("/data")
 def get_data():
@@ -26,6 +28,7 @@ def get_data():
         return jsonify({'message': data[0]})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
