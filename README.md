@@ -3,7 +3,14 @@
 
 ## docker-compose-prod
 
-version: '3.8'
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+az --version
+
+
+
+
+
+##version: '3.8'
 
 services:
   web:
