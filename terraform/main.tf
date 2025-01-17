@@ -27,14 +27,6 @@ resource "azurerm_subnet" "main" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-# Define SSH Key
-#resource "azurerm_ssh_public_key" "web" {
-#  name                = "web-ssh-key"
-#  resource_group_name = azurerm_resource_group.main.name
-#  public_key          = file("/home/azureuser/azure-ansible.pub")  # Use public SSH key file here
-#  location            = azurerm_resource_group.main.location
-#}
-
 # Define network security group for both web server and database
 resource "azurerm_network_security_group" "main" {
   name                = "webapp-nsg"
@@ -119,12 +111,6 @@ resource "azurerm_linux_virtual_machine" "web" {
     username   = "azureuser"
     public_key = tls_private_key.example_ssh.public_key_openssh
   }
-
-
-  #ssh_key {
-  #  path     = "/home/azureuser/azure-ansible.pub"
-  #  key_data = azurerm_ssh_public_key.web.public_key
-  #}
 }
 
 resource "azurerm_linux_virtual_machine" "db" {
@@ -149,12 +135,6 @@ resource "azurerm_linux_virtual_machine" "db" {
     username   = "azureuser"
     public_key = tls_private_key.example_ssh.public_key_openssh
   }
-
-  #ssh_key {
-  #  path     = "/home/azureuser/.ssh/authorized_keys"
-  #  key_data = azurerm_ssh_public_key.web.public_key
-    # key_data = file("/home/azureuser/azure-ansible.pub")
-  #}
 }
 
 # Network Interfaces (shared for both VMs)
@@ -168,16 +148,6 @@ resource "azurerm_network_interface" "main" {
     subnet_id                     = azurerm_subnet.main.id
     private_ip_address_allocation = "Dynamic"
   }
-
-# Connect the security group to the network interface
-# resource "azurerm_network_interface_security_group_association" "main" {
-#  network_interface_id      = azurerm_network_interface.main.id
-#  network_security_group_id = azurerm_network_security_group.main.id
-#}
-
-#azurem_network_security_group {
-#    id = azurerm_network_security_group.main.id
-#  }
 }
 
 terraform {
