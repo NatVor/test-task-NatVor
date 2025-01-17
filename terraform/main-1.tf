@@ -2,7 +2,7 @@
 
 provider "azurerm" {
   features {}
-  subscription_id = "b9524f11-a992-45be-8cbe-8071c1eb6be7"
+  subscription_id = " "
 }
 
 # Define resource group
@@ -170,7 +170,7 @@ resource "azurerm_network_interface" "main" {
   }
 
 # Connect the security group to the network interface
-#resource "azurerm_network_interface_security_group_association" "main" {
+# resource "azurerm_network_interface_security_group_association" "main" {
 #  network_interface_id      = azurerm_network_interface.main.id
 #  network_security_group_id = azurerm_network_security_group.main.id
 #}
