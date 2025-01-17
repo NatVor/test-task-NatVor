@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./app
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=database
+      - DB_USER=db-user
+      - DB_PASS=db-password
+      - DB_NAME=db
+    networks:
+      - app_network  
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  db_data:
