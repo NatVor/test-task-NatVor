@@ -6,7 +6,7 @@ This repository contains a project setup for deploying a web application to Azur
 
 Before starting, ensure you have the following tools installed:
 
-- **Docker**: [Install Docker](https://docs.docker.com/get-docker/)
+- **Docker**: [Install Docker](https://docs.docker.com/engine/install/ubuntu/)
 - **Docker Compose**: [Install Docker Compose](https://docs.docker.com/compose/install/)
 - **Ansible**: [Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html)
 - **Terraform**: [Install Terraform](https://www.terraform.io/downloads.html)
