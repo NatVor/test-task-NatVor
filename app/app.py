@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 # Configure MySQL connection
 db_config = {
-    'user': 'user',
-    'password': 'password',
+    'user': 'db-user',
+    'password': 'db-password',
     'host': 'database',
     'database': 'db'
 }
