@@ -20,7 +20,7 @@
 
     - name: Create database and user
       mysql_user:
-        name: db_user
-        password: db_password
+        name: db-user
+        password: db-password
         priv: '*.*:ALL'
         state: present
