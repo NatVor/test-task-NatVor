@@ -1,29 +1,27 @@
 ---
 - name: Configure the web server
-  hosts: web_servers
+  hosts: webserver
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Update and install dependencies
       apt:
         update_cache: yes
-        name: 
+        name:
           - apt-transport-https
           - ca-certificates
           - curl
           - software-properties-common
+          - python3-pip
+          - python3-dev
+          - libffi-dev
+          - libssl-dev
         state: present
 
-    - name: Add Docker GPG key
-      command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-
-    - name: Add Docker repository
-      apt_repository:
-        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        state: present
-
-    - name: Install Docker
+    - name: Install Docker from default repository
       apt:
-        name: docker-ce
+        name: docker.io
         state: present
 
     - name: Start Docker service
@@ -31,6 +29,39 @@
         name: docker
         state: started
         enabled: yes
+
+    - name: Install Python Docker SDK (docker)
+      pip:
+        name: docker
+        state: present
+        executable: /usr/bin/pip3
+
+    - name: Ensure directories exist for Nginx volumes
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+      loop:
+        - /files/nginx-config
+        - /files/certbot
+
+    - name: Copy nginx configuration
+      copy:
+        src: files/nginx-config/nginx.conf
+        dest: /files/nginx-config/nginx.conf
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Copy index.html to web server
+      copy:
+        src: files/index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
 
     - name: Run Nginx container
       docker_container:
@@ -41,5 +72,27 @@
           - "80:80"
           - "443:443"
         volumes:
-          - /path/to/certbot:/etc/letsencrypt
-          - /path/to/nginx-config:/etc/nginx
+          - /files/certbot:/etc/letsencrypt
+          - /files/nginx-config:/etc/nginx
+
+    - name: Install Certbot
+      apt:
+        name: certbot
+        state: present
+
+    - name: Install Certbot Nginx plugin
+      apt:
+        name: python3-certbot-nginx
+        state: present
+
+    - name: Add azureuser to docker group
+      user:
+        name: azureuser
+        group: docker
+        append: yes
+
+    # - name: Get SSL certificates using Certbot
+    #   shell: |
+    #     certbot --nginx -d my-domain.com --non-interactive --agree-tos --email natalya.chulan@gmail.com
+    #   args:
+    #     creates: "/etc/letsencrypt/live/my-domain.com/fullchain.pem"
