@@ -7,8 +7,8 @@ services:
       - "5000:5000"
     environment:
       - DB_HOST=database
-      - DB_USER=user
-      - DB_PASS=password
+      - DB_USER=db-user
+      - DB_PASS=db-password
       - DB_NAME=db
 
   web:
@@ -27,8 +27,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: db-user
+      MYSQL_PASSWORD: db-password
     volumes:
       - db_data:/var/lib/mysql
     ports:
